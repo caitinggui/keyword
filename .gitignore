@@ -1,0 +1,10 @@
+*.pyc
+*.data
+*.bin
+*.swp
+*.log
+*.log.*
+*.lock
+resource
+jieba.cache
+pid.txt
