@@ -138,12 +138,15 @@ class Segmentation(object):
 
         all_words = self.ws.segment(text, use_stop_words=False, use_speech_tags_filter=False)
 
+        words = self.ws.segment(text, use_stop_words=True, use_speech_tags_filter=False)
+
         return util.AttrDict(
             sentences=sentences,
             words_no_filter=words_no_filter,
             words_no_stop_words=words_no_stop_words,
             words_all_filters=words_all_filters,
-            words=all_words,
+            all_words=all_words,
+            words=words,
             text=text
         )
 

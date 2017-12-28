@@ -25,7 +25,7 @@ from textrank import TextRankforQuery
 texts = ['算法基于textrank，有一些调整，目前使用效果还好，后续有改动的话再说，目前就这样了。主要用法就是下面这么用的，更进一步的请阅读源码，同时也可以自己修改源码来调整使用效果.加油!', '我长度小于10', '我是一串乱七八糟的词，没有, 的地的的的的的东东的的的的', '']
 
 print('--------------------')
-print("默认只处理词长大于等于10的句子")
+print("默认只处理词长大于等于10的句子, 小于该长度的，分数会被置为0")
 tr4w = TextRankforQuery()
 
 for text in texts:
@@ -37,11 +37,8 @@ for text in texts:
     # 长查询window暂定为10，短查询范围为2-5之间
     print('关键词：')
     txt = tr4w.getKeywordsDict(text)
-    if isinstance(txt, dict):
-        for item in txt:
-            print(item, txt[item])
-    else:
-        print(txt)
+    for item in txt:
+        print(item, txt[item])
 
 print('--------------------')
 print("对任何长度的句子都做处理")

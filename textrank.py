@@ -54,9 +54,9 @@ class TextRankforQuery(object):
         self.keywords = []
 
         seg_result = self.seg.segment(text=text, lower=self.lower)
-        # 不需要提取关键词就原句返回
-        if len(seg_result.words) < self.allow_word_num:
-            return text
+        # 不需要提取关键词就返回原句各种分词后的结果
+        if len(seg_result.all_words) < self.allow_word_num:
+            return seg_result
 
         # words_no_filter:对sentences中每个句子分词而得到的两级列表。
         # words_no_stop_words:去掉words_no_filter中的停止词而得到的两级列表。
@@ -101,28 +101,30 @@ class TextRankforQuery(object):
 
     def getKeywordsList(self, text, keyword_num=None):
         """
-        Args:
+        返回的都是列表
         """
         if not text:
             return ''
         keyword_num = keyword_num if keyword_num else self.keyword_num
         keyword = self.getKeywordsDict(text, keyword_num)
-        try:
-            result = keyword.keys()
-        except AttributeError:
-            pass
+        result = keyword.keys()
         logger.info("keyword in textrank: %s", result)
         return result
 
     def getKeywordsDict(self, text, keyword_num=None):
-        logger.info("textrank text params: %s", text)
+        """提取关键字后的结果为dict，未提取则是去除停用词的列表"""
+        logger.debug("textrank text params: %s", text)
         if not text:
             return {}
         keyword_num = keyword_num if keyword_num else self.keyword_num
         keywords = self.analyze(text)
-        if isinstance(keywords, str):
+        # 提取关键字后是包含字典的列表
+        if isinstance(keywords, dict):
+            result = {}
             logger.info("text is too short to extract keyword")
-            return keywords
+            for k in keywords.words:
+                result[k] = 0
+            return result
         result = self.topNKeywordsDict(keywords, keyword_num)
         logger.info("keyword in textrank: %s", result)
         return result
